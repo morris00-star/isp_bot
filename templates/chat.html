@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>Router Support - Huawei A5 & V5</title>
+    {% load static %}
+    <style>
+        /* Mobile-First CSS - Optimized for Render.com hosting */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            min-height: -webkit-fill-available;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        html {
+            height: -webkit-fill-available;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            height: 95vh;
+            max-height: 95vh;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header h1 span {
+            font-size: 1.5rem;
+        }
+
+        .clear-btn {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .clear-btn:active {
+            background: rgba(255,255,255,0.3);
+            transform: scale(0.95);
+        }
+
+        .clear-btn:disabled {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Router Info Bar */
+        .router-info {
+            background: #f8f9fa;
+            padding: 8px 15px;
+            display: flex;
+            gap: 15px;
+            font-size: 0.75rem;
+            border-bottom: 1px solid #e9ecef;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            flex-shrink: 0;
+        }
+
+        .router-info::-webkit-scrollbar {
+            display: none;
+        }
+
+        .router-tag {
+            background: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            color: #495057;
+            border: 1px solid #dee2e6;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .router-tag.active {
+            background: #e7f5ff;
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        /* Chat Messages Area */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+        }
+
+        .message {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .message.user-message {
+            justify-content: flex-end;
+        }
+
+        .message-content {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .bot-message .message-content {
+            background: white;
+            border: 1px solid #e9ecef;
+            border-bottom-left-radius: 5px;
+            color: #212529;
+        }
+
+        .user-message .message-content {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+
+        .message-time {
+            font-size: 0.7rem;
+            color: #adb5bd;
+            margin-top: 4px;
+            margin-left: 12px;
+        }
+
+        .user-message .message-time {
+            text-align: right;
+            margin-right: 12px;
+        }
+
+        .icon {
+            margin-right: 6px;
+            font-size: 1.1rem;
+        }
+
+        /* Typing Indicator */
+        .typing-indicator .message-content {
+            background: white;
+            padding: 12px 20px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing-dots span {
+            width: 8px;
+            height: 8px;
+            background: #adb5bd;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+        /* Input Area */
+        .input-area {
+            background: white;
+            border-top: 1px solid #e9ecef;
+            padding: 12px;
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+
+        .input-wrapper {
+            flex: 1;
+            background: #f1f3f5;
+            border-radius: 25px;
+            padding: 4px 12px;
+            display: flex;
+            align-items: flex-end;
+            min-height: 45px;
+        }
+
+        #userInput {
+            width: 100%;
+            border: none;
+            background: transparent;
+            padding: 10px 0;
+            font-size: 1rem;
+            outline: none;
+            resize: none;
+            max-height: 120px;
+            font-family: inherit;
+            line-height: 1.4;
+        }
+
+        #userInput::placeholder {
+            color: #adb5bd;
+            font-size: 0.95rem;
+        }
+
+        #sendButton {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            padding: 0 22px;
+            height: 45px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        #sendButton:active {
+            transform: scale(0.95);
+            opacity: 0.9;
+        }
+
+        #sendButton:disabled {
+            opacity: 0.5;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            background: white;
+            padding: 12px;
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            border-top: 1px solid #e9ecef;
+            flex-shrink: 0;
+        }
+
+        .quick-actions::-webkit-scrollbar {
+            display: none;
+        }
+
+        .quick-btn {
+            background: #f1f3f5;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            color: #495057;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .quick-btn:active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* FAQ Section */
+        .faq-section {
+            background: white;
+            border-top: 8px solid #f1f3f5;
+            flex-shrink: 0;
+        }
+
+        .faq-header {
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .faq-header h3 {
+            font-size: 1rem;
+            color: #212529;
+            flex: 1;
+        }
+
+        .faq-header .arrow {
+            transition: transform 0.3s;
+            font-size: 1.2rem;
+        }
+
+        .faq-header.active .arrow {
+            transform: rotate(180deg);
+        }
+
+        .faq-content {
+            display: none;
+            padding: 0 15px 15px;
+        }
+
+        .faq-content.show {
+            display: block;
+        }
+
+        .faq-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .category h4 {
+            font-size: 0.9rem;
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .category-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .category-buttons button {
+            background: #f1f3f5;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #495057;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+            flex: 1 1 auto;
+            min-width: 120px;
+            border: 1px solid #dee2e6;
+        }
+
+        .category-buttons button:active {
+            background: #667eea;
+            color: white;
+        }
+
+        /* Contact Footer */
+        .contact-footer {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #868e96;
+            border-top: 1px solid #e9ecef;
+            flex-shrink: 0;
+        }
+
+        .contact-footer a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* Confirmation Modal - Mobile Optimized */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 25px;
+            width: 100%;
+            max-width: 320px;
+            overflow: hidden;
+            animation: slideUp 0.3s;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .modal-header .emoji {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .modal-header h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .modal-body {
+            padding: 25px 20px;
+            text-align: center;
+        }
+
+        .modal-body p {
+            color: #495057;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+
+        .warning-text {
+            color: #ff6b6b !important;
+            font-weight: 500;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            padding: 0 20px 20px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-btn.cancel {
+            background: #f1f3f5;
+            color: #495057;
+        }
+
+        .modal-btn.delete {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .modal-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: white;
+            border-radius: 30px;
+            padding: 15px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideUp 0.3s;
+            z-index: 1001;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .toast.success {
+            border-left: 4px solid #51cf66;
+        }
+
+        .toast.error {
+            border-left: 4px solid #ff6b6b;
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 0.95rem;
+            color: #212529;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-10px); opacity: 1; }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.3s ease-in-out;
+        }
+
+        /* Loading Skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Prevent body scroll when modal is open */
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Touch-friendly tap targets */
+        button, .clear-btn, .quick-btn, .category-buttons button {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        /* Safe area for notched phones */
+        @supports (padding: max(0px)) {
+            .header {
+                padding-top: max(15px, env(safe-area-inset-top));
+                padding-left: max(20px, env(safe-area-inset-left));
+                padding-right: max(20px, env(safe-area-inset-right));
+            }
+
+            .input-area {
+                padding-bottom: max(12px, env(safe-area-inset-bottom));
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>
+                <span>🔧</span>
+                Router Support
+            </h1>
+            <button onclick="clearHistory()" class="clear-btn" id="clearHistoryBtn">
+                <span>🗑️</span>
+                Clear
+            </button>
+        </div>
+
+        <!-- Router Info Bar -->
+        <div class="router-info">
+            <span class="router-tag active">📱 Huawei A5 (2.4GHz)</span>
+            <span class="router-tag">🚀 Huawei V5 (Dual Band)</span>
+            <span class="router-tag">⚡ 24/7 Support</span>
+        </div>
+
+        <!-- Chat Messages -->
+        <div class="chat-messages" id="chatMessages">
+            {% for message in chat_history %}
+                <div class="message {{ message.type }}-message">
+                    <div>
+                        <div class="message-content">
+                            {% if message.type == 'bot' %}
+                                <span class="icon">🤖</span>
+                            {% else %}
+                                <span class="icon">👤</span>
+                            {% endif %}
+                            {{ message.text|safe|linebreaksbr }}
+                        </div>
+                        <div class="message-time">
+                            {{ message.timestamp|default:"Just now" }}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="message bot-message">
+                    <div>
+                        <div class="message-content">
+                            <span class="icon">🤖</span>
+                            Hello! 👋 I'm your router support assistant. How can I help you with your Huawei router today?
+                        </div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            <!-- Typing Indicator -->
+            <div id="typingIndicator" class="message bot-message" style="display: none;">
+                <div>
+                    <div class="message-content typing-indicator">
+                        <div class="typing-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <button onclick="useSuggestedQuestion('Why is my internet slow?')" class="quick-btn">🐢 Slow</button>
+            <button onclick="useSuggestedQuestion('How do I change my WiFi password?')" class="quick-btn">🔑 Password</button>
+            <button onclick="useSuggestedQuestion('Internet keeps disconnecting')" class="quick-btn">📶 Drops</button>
+            <button onclick="useSuggestedQuestion('How to reset router?')" class="quick-btn">🔄 Reset</button>
+            <button onclick="useSuggestedQuestion('Weak WiFi signal')" class="quick-btn">📡 Weak Signal</button>
+        </div>
+
+        <!-- FAQ Section (Collapsible) -->
+        <div class="faq-section">
+            <div class="faq-header" onclick="toggleFAQ()" id="faqHeader">
+                <h3>📋 Frequently Asked Questions</h3>
+                <span class="arrow" id="faqArrow">▼</span>
+            </div>
+            <div class="faq-content" id="faqContent">
+                <div class="faq-categories">
+                    <div class="category">
+                        <h4>🔌 Connection Issues</h4>
+                        <div class="category-buttons">
+                            <button onclick="useSuggestedQuestion('Why is my router showing only one light?')">⚡ One Light</button>
+                            <button onclick="useSuggestedQuestion('Why does my internet keep disconnecting?')">📶 Keeps Dropping</button>
+                            <button onclick="useSuggestedQuestion('Devices not connecting to WiFi')">📱 Not Connecting</button>
+                        </div>
+                    </div>
+
+                    <div class="category">
+                        <h4>⚡ Performance</h4>
+                        <div class="category-buttons">
+                            <button onclick="useSuggestedQuestion('Why is my internet slow?')">🐢 Slow Speed</button>
+                            <button onclick="useSuggestedQuestion('WiFi weak in some rooms')">📡 Weak Signal</button>
+                            <button onclick="useSuggestedQuestion('2.4GHz vs 5GHz difference')">📊 WiFi Bands</button>
+                        </div>
+                    </div>
+
+                    <div class="category">
+                        <h4>🔧 Setup</h4>
+                        <div class="category-buttons">
+                            <button onclick="useSuggestedQuestion('How to change WiFi password?')">🔑 Change Password</button>
+                            <button onclick="useSuggestedQuestion('How to reset router?')">🔄 Factory Reset</button>
+                            <button onclick="useSuggestedQuestion('How to setup parental controls?')">👪 Parental Controls</button>
+                        </div>
+                    </div>
+
+                    <div class="category">
+                        <h4>📱 Router Models</h4>
+                        <div class="category-buttons">
+                            <button onclick="useSuggestedQuestion('Tell me about Huawei A5')">📱 Huawei A5</button>
+                            <button onclick="useSuggestedQuestion('Tell me about Huawei V5')">🚀 Huawei V5</button>
+                            <button onclick="useSuggestedQuestion('Compare A5 and V5')">⚖️ Compare</button>
+                        </div>
+                    </div>
+
+                    <div class="category">
+                        <h4>⚠️ Troubleshooting</h4>
+                        <div class="category-buttons">
+                            <button onclick="useSuggestedQuestion('Router overheating')">🌡️ Overheating</button>
+                            <button onclick="useSuggestedQuestion('How to update firmware?')">🔄 Update</button>
+                            <button onclick="useSuggestedQuestion('Interference issues')">📻 Interference</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Footer -->
+        <div class="contact-footer">
+            <span>Need human help? <a href="/contact">Contact Support</a></span>
+        </div>
+    </div>
+
+    <script>
+        // Mobile-optimized JavaScript
+        let isSending = false;
+        let faqOpen = false;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            scrollToBottom();
+            setupTextarea();
+
+            // Add touch event handling
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('touchstart', function(e) {
+                    e.preventDefault(); // Prevent double-tap zoom
+                }, { passive: false });
+            });
+        });
+
+        // Setup textarea auto-resize
+        function setupTextarea() {
+            const textarea = document.getElementById('userInput');
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+
+            // Handle keyboard show/hide on mobile
+            textarea.addEventListener('focus', function() {
+                setTimeout(scrollToBottom, 300);
+            });
+        }
+
+        // Scroll to bottom smoothly
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTo({
+                top: chatMessages.scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+
+        // Handle key press
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // Use suggested question
+        function useSuggestedQuestion(question) {
+            const input = document.getElementById('userInput');
+            input.value = question;
+            input.style.height = 'auto';
+            input.style.height = Math.min(input.scrollHeight, 120) + 'px';
+            sendMessage();
+        }
+
+        // Send message
+        function sendMessage() {
+            if (isSending) return;
+
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+
+            if (!message) {
+                input.classList.add('shake');
+                setTimeout(() => input.classList.remove('shake'), 300);
+                return;
+            }
+
+            isSending = true;
+
+            // Disable input and button
+            input.disabled = true;
+            document.getElementById('sendButton').disabled = true;
+
+            // Add user message to chat
+            addMessageToChat('user', message);
+
+            // Clear input
+            input.value = '';
+            input.style.height = 'auto';
+
+            // Show typing indicator
+            showTypingIndicator();
+
+            // Send to server
+            fetch('/get-response/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                hideTypingIndicator();
+
+                setTimeout(() => {
+                    addMessageToChat('bot', data.response);
+
+                    // Re-enable input
+                    input.disabled = false;
+                    document.getElementById('sendButton').disabled = false;
+                    input.focus();
+                    isSending = false;
+                }, 500);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                hideTypingIndicator();
+                addMessageToChat('bot', '😔 Sorry, connection error. Please try again.');
+
+                input.disabled = false;
+                document.getElementById('sendButton').disabled = false;
+                isSending = false;
+            });
+        }
+
+        // Add message to chat
+        function addMessageToChat(type, text) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}-message`;
+
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            messageDiv.innerHTML = `
+                <div>
+                    <div class="message-content">
+                        <span class="icon">${type === 'bot' ? '🤖' : '👤'}</span>
+                        ${text.replace(/\n/g, '<br>')}
+                    </div>
+                    <div class="message-time">${timeStr}</div>
+                </div>
+            `;
+
+            chatMessages.appendChild(messageDiv);
+            scrollToBottom();
+        }
+
+        // Typing indicator
+        function showTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'block';
+            scrollToBottom();
+        }
+
+        function hideTypingIndicator() {
+            document.getElementById('typingIndicator').style.display = 'none';
+        }
+
+        // Toggle FAQ
+        function toggleFAQ() {
+            const content = document.getElementById('faqContent');
+            const arrow = document.getElementById('faqArrow');
+            const header = document.getElementById('faqHeader');
+
+            if (faqOpen) {
+                content.classList.remove('show');
+                arrow.style.transform = 'rotate(0deg)';
+                header.classList.remove('active');
+            } else {
+                content.classList.add('show');
+                arrow.style.transform = 'rotate(180deg)';
+                header.classList.add('active');
+            }
+
+            faqOpen = !faqOpen;
+        }
+
+        // Clear history with confirmation modal
+        function clearHistory() {
+            // Prevent body scroll
+            document.body.classList.add('modal-open');
+
+            // Create modal
+            const modal = document.createElement('div');
+            modal.className = 'modal-overlay';
+            modal.id = 'confirmModal';
+            modal.onclick = function(e) {
+                if (e.target === modal) closeModal();
+            };
+
+            modal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <div class="emoji">🗑️</div>
+                        <h3>Clear Chat History?</h3>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to clear all conversation history?</p>
+                        <p class="warning-text">This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-buttons">
+                        <button class="modal-btn cancel" onclick="closeModal()">No, Keep</button>
+                        <button class="modal-btn delete" onclick="proceedClearHistory()">Yes, Clear</button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(modal);
+        }
+
+        // Close modal
+        function closeModal() {
+            const modal = document.getElementById('confirmModal');
+            if (modal) {
+                modal.remove();
+                document.body.classList.remove('modal-open');
+            }
+        }
+
+        // Proceed with clearing history
+        function proceedClearHistory() {
+            closeModal();
+
+            const clearBtn = document.getElementById('clearHistoryBtn');
+            const originalText = clearBtn.innerHTML;
+            clearBtn.innerHTML = '<span>⏰</span> Clearing...';
+            clearBtn.disabled = true;
+
+            fetch('/clear-history/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken')
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast('Chat history cleared!', 'success');
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    throw new Error('Failed');
+                }
+            })
+            .catch(error => {
+                showToast('Failed to clear history', 'error');
+                clearBtn.innerHTML = originalText;
+                clearBtn.disabled = false;
+            });
+        }
+
+        // Show toast notification
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.innerHTML = `
+                <span class="toast-icon">${type === 'success' ? '✅' : '❌'}</span>
+                <span class="toast-message">${message}</span>
+            `;
+
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.animation = 'slideUp 0.3s reverse';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Handle offline/online events
+        window.addEventListener('offline', function() {
+            showToast('You are offline. Check connection.', 'error');
+        });
+
+        window.addEventListener('online', function() {
+            showToast('Back online!', 'success');
+        });
+
+        // Prevent zoom on double-tap for better mobile experience
+        document.addEventListener('touchend', function(e) {
+            const now = Date.now();
+            const doubleTapDelay = 300;
+
+            if (now - lastTap < doubleTapDelay) {
+                e.preventDefault();
+            }
+            lastTap = now;
+        }, { passive: false });
+
+        let lastTap = 0;
+    </script>
+</body>
+</html>

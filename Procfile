@@ -1,0 +1,1 @@
+web: gunicorn isp_chatbot_project.wsgi:application

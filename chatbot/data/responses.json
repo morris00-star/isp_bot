@@ -1,0 +1,183 @@
+{
+    "responses": [
+        {
+            "id": 1,
+            "category": "power_issues",
+            "keywords": ["one light", "only one light", "single light", "router light", "red light", "no light", "power light", "light off", "blinking red"],
+            "response": "🔌 Please check if the power cable is properly connected. Try these steps:\n1. Ensure the power adapter is firmly plugged into the router and wall outlet\n2. Check if the wall outlet is working (test with another device)\n3. Restart the router by unplugging for 30 seconds, then plug back in\n4. Wait 2 minutes for the router to fully boot up\nIf the internet light does not turn on, check the network cable or contact support."
+        },
+        {
+            "id": 2,
+            "category": "connection_drops",
+            "keywords": ["on and off", "disconnecting", "keeps dropping", "keep disconnecting", "connection drops", "internet cuts", "loses connection", "unstable", "keeps disconnecting", "random disconnects"],
+            "response": "📶 This may be due to weak signal or line instability. Try these solutions:\n1. Restart your router and modem\n2. Ensure all cables are firmly connected\n3. Check for loose connections\n4. Move your device closer to the router to test\n5. Reduce interference by moving other electronic devices away\nIf the problem continues, contact support for line testing."
+        },
+        {
+            "id": 3,
+            "category": "slow_internet",
+            "keywords": ["slow internet", "slow speed", "buffering", "lag", "loading slow", "pages load slow", "video buffering", "slow connection", "speed slow", "internet slow"],
+            "response": "🐢 Let's troubleshoot your slow internet:\n1. Restart your router (unplug for 30 seconds)\n2. Move closer to the router and test speed\n3. Check how many devices are connected (too many can slow things down)\n4. Run a speed test at speedtest.net\n5. Check if you're on 2.4GHz or 5GHz band (5GHz is faster but shorter range)\n6. Update your router's firmware through admin panel\nIf slow speed continues, contact support to check your plan speed."
+        },
+        {
+            "id": 4,
+            "category": "weak_signal",
+            "keywords": ["weak signal", "certain areas", "poor coverage", "far rooms", "dead zone", "no signal", "weak wifi", "signal strength", "coverage issue", "can't reach", "not reaching"],
+            "response": "📡 WiFi signal issues are common. Here's how to improve coverage:\n1. Move router to a central location in your home\n2. Place router elevated (on a shelf, not floor)\n3. Keep away from walls, metal objects, and appliances\n4. Avoid placing near microwave ovens or cordless phones\n5. For Huawei V5 users, try connecting to 2.4GHz band for better range\n6. Consider a WiFi extender for large homes\n7. Update router antenna position (if external antennas)"
+        },
+        {
+            "id": 5,
+            "category": "connection_failed",
+            "keywords": ["not connecting", "cannot connect", "device won't connect", "can't connect", "connection failed", "won't join", "unable to connect", "authentication error", "wrong password", "keeps asking password"],
+            "response": "🔐 Having trouble connecting? Try these steps:\n1. Restart both your router AND the device\n2. Forget the WiFi network on your device and reconnect\n3. Double-check the WiFi password (case sensitive)\n4. Ensure you're not at device limit (most routers support 10-15 devices)\n5. For Huawei A5/V5, check if MAC filtering is enabled in admin panel\n6. Try connecting another device to isolate the issue"
+        },
+        {
+            "id": 6,
+            "category": "password_change",
+            "keywords": ["change password", "reset password", "wifi password", "new password", "update password", "forgot password", "change wifi password", "router password", "admin password"],
+            "response": "🔑 To change your WiFi password:\n1. Open browser and type router IP address:\n   - Huawei A5: 192.168.8.1\n   - Huawei V5: 192.168.1.1\n2. Login with admin credentials (default: admin/admin or admin/password)\n3. Go to WiFi Settings or Wireless Settings\n4. Change the WiFi password (use 8+ characters for security)\n5. Save settings and restart router\n6. Reconnect all devices with new password\n\n⚠️ Note: Write down the new password!"
+        },
+        {
+            "id": 7,
+            "category": "router_setup",
+            "keywords": ["setup", "install", "first time", "new router", "how to setup", "installation", "configure", "initial setup"],
+            "response": "🆕 Setting up your new router:\n1. Connect power cable and turn on router\n2. Connect modem to router's WAN/Internet port using Ethernet cable\n3. Wait for lights to stabilize (2-3 minutes)\n4. Find WiFi network on your device\n5. Default WiFi name (SSID) is on router sticker\n6. Default password is also on router sticker\n7. Optional: Log into admin panel (192.168.8.1 for A5, 192.168.1.1 for V5) to customize settings"
+        },
+        {
+            "id": 8,
+            "category": "firmware_update",
+            "keywords": ["update", "firmware", "software update", "upgrade", "new version", "router update"],
+            "response": "🔄 Keeping router firmware updated is important:\n1. Log into router admin panel\n2. Look for 'System Tools' or 'Administration'\n3. Find 'Firmware Update' or 'Software Upgrade'\n4. Click 'Check for Updates'\n5. If available, click 'Update' (don't turn off router during update!)\n6. Router will restart after update\n\n⚠️ Warning: Never interrupt a firmware update - this can damage your router!"
+        },
+        {
+            "id": 9,
+            "category": "reset_router",
+            "keywords": ["factory reset", "hard reset", "reset router", "restore", "default settings", "reset to factory", "wipe settings"],
+            "response": "⚠️ Factory reset will erase all your settings:\n1. Find the reset button (small hole) on router\n2. Use a paperclip to press and hold for 10-15 seconds\n3. Release when lights blink\n4. Router will restart with factory settings\n5. You'll need to setup WiFi and password again\n\n📍 Default access after reset:\n- IP: 192.168.8.1 (A5) or 192.168.1.1 (V5)\n- Username: admin\n- Password: admin (or blank)"
+        },
+        {
+            "id": 10,
+            "category": "device_limit",
+            "keywords": ["too many devices", "device limit", "maximum connections", "can't connect more", "full", "at capacity", "no more connections"],
+            "response": "📱 Device connection limits:\n1. Most home routers support 10-15 simultaneous connections\n2. Check how many devices are connected in admin panel\n3. Disconnect unused devices\n4. Consider upgrading router if you have many smart home devices\n5. Huawei V5 supports more devices than A5 model\n6. Try rebooting router to clear connection table"
+        },
+        {
+            "id": 11,
+            "category": "wifi_speed_comparison",
+            "keywords": ["2.4ghz vs 5ghz", "which band", "dual band", "single band", "band selection", "frequency", "wifi band"],
+            "response": "📊 Understanding WiFi bands:\n\n📡 2.4GHz (Huawei A5 & V5):\n- Better range through walls\n- Slower speeds (up to 300Mbps)\n- More interference from devices\n\n📡 5GHz (Huawei V5 only):\n- Faster speeds (up to 1300Mbps)\n- Shorter range\n- Less interference\n\n💡 Tip: Use 5GHz for streaming/gaming near router, 2.4GHz for devices far away"
+        },
+        {
+            "id": 12,
+            "category": "overheating",
+            "keywords": ["overheating", "hot router", "too hot", "router hot", "heat", "temperature", "burning", "warm"],
+            "response": "🌡️ If your router feels hot:\n1. Ensure proper ventilation - don't cover router\n2. Keep in cool, well-ventilated area\n3. Remove any objects stacked on router\n4. Check if vents are blocked by dust\n5. Consider elevating router for airflow\n6. Extreme heat can cause disconnections and damage\n7. If consistently hot, contact support for replacement"
+        },
+        {
+            "id": 13,
+            "category": "parental_controls",
+            "keywords": ["parental control", "block websites", "restrict access", "child safe", "internet filtering", "block content", "time limits"],
+            "response": "👨‍👩‍👧 Setting up parental controls:\n1. Login to router admin panel\n2. Look for 'Parental Controls' or 'Access Restrictions'\n3. Select devices to control\n4. Set time limits for internet access\n5. Block specific websites or categories\n6. Save settings and test\n\nNote: Basic controls available on Huawei routers. For advanced filtering, consider third-party solutions."
+        },
+        {
+            "id": 14,
+            "category": "ethernet_issues",
+            "keywords": ["ethernet not working", "wired connection", "lan port", "cable connection", "no internet wired", "ethernet cable", "lan light"],
+            "response": "🔌 Having issues with wired connection:\n1. Check if Ethernet cable is firmly connected\n2. Try different LAN port on router\n3. Test with different Ethernet cable\n4. Check if LAN port light is on/blinking\n5. Restart router and computer\n6. Update network adapter drivers on computer\n7. Try a different device to isolate issue"
+        },
+        {
+            "id": 15,
+            "category": "interference",
+            "keywords": ["interference", "static", "noise", "other networks", "neighbors wifi", "crowded", "channel interference"],
+            "response": "📻 Dealing with wireless interference:\n1. Change WiFi channel in router settings\n2. Auto channel selection often works best\n3. Move router away from:\n   - Microwave ovens\n   - Cordless phones\n   - Baby monitors\n   - Bluetooth devices\n4. For Huawei V5, use 5GHz band which has less interference\n5. Update router firmware for better channel management"
+        },
+        {
+            "id": 16,
+            "category": "guest_network",
+            "keywords": ["guest wifi", "guest network", "visitor access", "separate network", "guest access"],
+            "response": "👋 Setting up guest WiFi:\n1. Login to router admin panel\n2. Look for 'Guest Network' settings\n3. Enable guest WiFi\n4. Set a separate password for guests\n5. Options to limit guest access:\n   - Internet only (no local network access)\n   - Bandwidth limits\n   - Time limits\n6. Save settings\n\nGuests get internet, but can't access your main devices!"
+        },
+        {
+            "id": 17,
+            "category": "vpn_setup",
+            "keywords": ["vpn", "virtual private network", "vpn setup", "vpn router", "configure vpn"],
+            "response": "🔒 VPN on your router:\n1. Check if your Huawei router supports VPN (V5 models typically do)\n2. Login to admin panel\n3. Look for 'VPN Server' or 'VPN Passthrough'\n4. Options:\n   - Setup as VPN server (connect to home remotely)\n   - Enable VPN passthrough (use VPN apps on devices)\n5. Configure according to your VPN provider\nNote: For advanced VPN features, consider flashing custom firmware (advanced users only)"
+        },
+        {
+            "id": 18,
+            "category": "qos_settings",
+            "keywords": ["qos", "quality of service", "prioritize", "bandwidth allocation", "traffic priority", "gaming priority", "streaming priority"],
+            "response": "⚡ Optimizing your connection with QoS:\n1. Login to router admin panel\n2. Find 'QoS' or 'Traffic Control' settings\n3. Enable QoS\n4. Prioritize devices or applications:\n   - Gaming consoles\n   - Streaming devices\n   - Work computers\n5. Set bandwidth limits if needed\n6. Save and test\n\nGood for: Gaming, video calls, streaming without buffering"
+        },
+        {
+            "id": 19,
+            "category": "ip_conflict",
+            "keywords": ["ip address conflict", "ip conflict", "same ip", "address already in use", "dhcp issue"],
+            "response": "⚠️ IP address conflict occurs when two devices have same IP:\n1. Restart your router - this renews all IP addresses\n2. Restart affected devices\n3. In router admin, check DHCP settings\n4. Ensure DHCP server is enabled\n5. Reduce DHCP range if you have many static IPs\n6. For advanced: Set static IPs outside DHCP range"
+        },
+        {
+            "id": 20,
+            "category": "dns_issues",
+            "keywords": ["dns", "dns error", "server not found", "dns probe", "website not loading", "dns issue", "domain not resolving"],
+            "response": "🌐 DNS issues can prevent websites from loading:\n1. Try using Google DNS (8.8.8.8 and 8.8.4.4)\n2. In router admin, go to Internet/WAN settings\n3. Change DNS to manual and enter:\n   - Primary: 8.8.8.8\n   - Secondary: 8.8.4.4\n4. Save and restart router\n5. Alternative DNS: Cloudflare (1.1.1.1) or OpenDNS\n6. This often fixes \"Website not found\" errors"
+        },
+        {
+            "id": 21,
+            "category": "huawei_a5_specific",
+            "keywords": ["huawei a5", "a5 model", "a5 specific", "a5 problem", "a5 setup"],
+            "response": "📱 Huawei A5 Router Information:\n- Single band: 2.4GHz only\n- Max speed: 300Mbps\n- Good for: Basic browsing, email, smart home devices\n- Admin IP: 192.168.8.1\n- Default login: admin/admin\n- Features: Basic QoS, Parental controls, Guest network\n- Best for: Small apartments, basic internet needs\n- Range: ~30-40 meters indoors"
+        },
+        {
+            "id": 22,
+            "category": "huawei_v5_specific",
+            "keywords": ["huawei v5", "v5 model", "v5 specific", "v5 problem", "v5 setup", "dual band router"],
+            "response": "📱🚀 Huawei V5 Router Information:\n- Dual band: 2.4GHz and 5GHz\n- Max speed: 1300Mbps (combined)\n- Good for: Gaming, 4K streaming, multiple devices\n- Admin IP: 192.168.1.1\n- Default login: admin/admin\n- Advanced features:\n  * Dual-band steering\n  * MU-MIMO support\n  * Advanced QoS\n  * VPN server support\n- Range: ~30m (5GHz), ~50m (2.4GHz)\n- Best for: Medium homes, heavy internet users"
+        },
+        {
+            "id": 23,
+            "category": "wifi_calling",
+            "keywords": ["wifi calling", "calls over wifi", "voip", "voice over wifi", "poor call quality"],
+            "response": "📞 WiFi Calling setup and troubleshooting:\n1. Ensure your phone supports WiFi calling\n2. Enable in phone settings:\n   - iPhone: Settings > Phone > WiFi Calling\n   - Android: Settings > Connections > WiFi Calling\n3. Router needs:\n   - Stable internet connection\n   - Open ports (automatic in most cases)\n4. For better call quality:\n   - Prioritize your phone in QoS settings\n   - Use 5GHz band if close to router\n   - Reduce network congestion"
+        },
+        {
+            "id": 24,
+            "category": "port_forwarding",
+            "keywords": ["port forwarding", "open ports", "game server", "remote access", "nat", "forward ports"],
+            "response": "🔌 Setting up port forwarding:\n1. Login to router admin panel\n2. Find 'Port Forwarding' or 'Virtual Server'\n3. Create new rule:\n   - Service name (e.g., Minecraft Server)\n   - Device IP (use static IP for device)\n   - Port range (e.g., 25565)\n   - Protocol (TCP/UDP)\n4. Save and apply\n5. Test if port is open using online tools\n⚠️ Only forward ports you need - security risk!"
+        },
+        {
+            "id": 25,
+            "category": "mesh_wifi",
+            "keywords": ["mesh", "mesh network", "whole home wifi", "extend network", "wifi system", "multiple routers"],
+            "response": "🏠 Thinking about mesh WiFi?\n1. Standard routers (A5/V5) work for most homes\n2. Consider mesh if:\n   - Home > 2000 sq ft\n   - Multiple floors\n   - Thick walls/obstacles\n   - Many dead zones\n3. Huawei doesn't offer mesh, but you can:\n   - Use WiFi extenders\n   - Add access points\n   - Consider third-party mesh systems\n4. For now, optimize current router placement first!"
+        }
+    ],
+
+    "fallback_message": "I'm sorry, I couldn't help with that. Please visit our <a href='/contact' class='contact-link'>support page</a> or contact customer service for further assistance. You can also try rephrasing your question or check our suggested questions below.",
+
+    "greetings": [
+        "hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening", "howdy"
+    ],
+
+    "greeting_response": "Hello! 👋  I'm your router support assistant. How can I help you with your Huawei A5 or V5 router today?",
+
+    "thanks": [
+        "thank", "thanks", "appreciate", "helpful", "great", "awesome"
+    ],
+
+    "thanks_response": "You're welcome! 😊 Happy to help! If you have more questions, just ask.",
+
+    "suggested_questions": [
+        "Why is my router showing only one light?",
+        "Why does my internet keep disconnecting?",
+        "Why is my internet slow?",
+        "Why is WiFi weak in some rooms?",
+        "Why are my devices not connecting to WiFi?",
+        "How do I change my WiFi password?",
+        "What's the difference between 2.4GHz and 5GHz?",
+        "How do I reset my router to factory settings?",
+        "My router is overheating, what should I do?",
+        "How do I setup parental controls?",
+        "Can I setup a guest WiFi network?",
+        "What is QoS and how do I use it?"
+    ]
+}
