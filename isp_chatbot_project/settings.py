@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,28 +88,23 @@ WSGI_APPLICATION = 'isp_chatbot_project.wsgi.application'
 
 # Database configuration
 if IS_PRODUCTION:
+    # Render PostgreSQL configuration
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True
+        )
     }
 
 else:
 
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'irrigation_db',
-            'USER': os.getenv('USER_DB'),
-            'PASSWORD': os.getenv('PASSWORD_DB'),
-            'HOST': 'localhost',
-            'PORT': '5432',
-            'OPTIONS': {
-                'connect_timeout': 5,  # 5 seconds timeout
-            },
-            'CONN_MAX_AGE': 0,  # Don't persist connections
-        }
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
     }
 
 

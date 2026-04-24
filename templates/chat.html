@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>Router Support - Huawei A5 & V5</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Router Support Chatbot - Huawei A5 & V5</title>
     {% load static %}
     <style>
-        /* Mobile-First CSS - Optimized for Render.com hosting */
+        /* Modern CSS Reset */
         * {
             margin: 0;
             padding: 0;
@@ -15,427 +18,470 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            min-height: -webkit-fill-available;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        html {
-            height: -webkit-fill-available;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            height: 95vh;
-            max-height: 95vh;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            height: 100vh;
             overflow: hidden;
+            position: fixed;
+            width: 100%;
+            touch-action: pan-y pinch-zoom;
+        }
+
+        /* Main App Container - Mobile First */
+        .app-container {
+            max-width: 500px;
+            margin: 0 auto;
+            height: 100vh;
+            background: white;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
             display: flex;
             flex-direction: column;
             position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Status Bar for Mobile */
+        .status-bar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 12px 16px 8px;
+            color: white;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
+        }
+
+        .time {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .battery-status {
+            display: flex;
+            gap: 8px;
+            font-size: 12px;
         }
 
         /* Header */
         .header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 15px 20px;
+            padding: 16px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            flex-shrink: 0;
+            align-items: center;
+            border-bottom: 0.5px solid rgba(255,255,255,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
-        .header h1 {
-            font-size: 1.3rem;
-            font-weight: 600;
+        .header-left {
             display: flex;
             align-items: center;
+            gap: 12px;
+        }
+
+        .back-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 0;
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+            background: rgba(255,255,255,0.3);
+        }
+
+        .back-btn span {
+            font-size: 20px;
+        }
+
+        .header-info h1 {
+            font-size: 18px;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .header-info p {
+            font-size: 11px;
+            opacity: 0.9;
+            margin-top: 2px;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            margin: 0;
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Online Status Indicator */
+        .online-status {
+            padding: 6px 16px;
+            background: #f0f0f0;
+            font-size: 11px;
+            text-align: center;
+            color: #666;
+            border-bottom: 0.5px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             gap: 8px;
         }
 
-        .header h1 span {
-            font-size: 1.5rem;
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00c853;
+            display: inline-block;
+            animation: pulse 2s infinite;
         }
 
-        .clear-btn {
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            color: white;
-            padding: 8px 12px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
-        .clear-btn:active {
-            background: rgba(255,255,255,0.3);
-            transform: scale(0.95);
-        }
-
-        .clear-btn:disabled {
-            opacity: 0.5;
-            pointer-events: none;
-        }
-
-        /* Router Info Bar */
-        .router-info {
-            background: #f8f9fa;
-            padding: 8px 15px;
-            display: flex;
-            gap: 15px;
-            font-size: 0.75rem;
-            border-bottom: 1px solid #e9ecef;
-            overflow-x: auto;
-            white-space: nowrap;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            flex-shrink: 0;
-        }
-
-        .router-info::-webkit-scrollbar {
-            display: none;
-        }
-
-        .router-tag {
-            background: white;
-            padding: 4px 12px;
-            border-radius: 30px;
-            color: #495057;
-            border: 1px solid #dee2e6;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .router-tag.active {
-            background: #e7f5ff;
-            border-color: #667eea;
-            color: #667eea;
-        }
-
-        /* Chat Messages Area */
+        /* Chat Messages Area - Mobile Optimized */
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 15px;
+            padding: 16px;
             background: #f8f9fa;
             display: flex;
             flex-direction: column;
             gap: 12px;
             -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
         }
 
+        /* Message Bubbles - Mobile Friendly */
         .message {
             display: flex;
-            animation: fadeIn 0.3s ease;
+            animation: slideIn 0.3s ease;
+            max-width: 85%;
         }
 
-        .message.user-message {
+        .bot-message {
+            justify-content: flex-start;
+        }
+
+        .user-message {
             justify-content: flex-end;
+            align-self: flex-end;
         }
 
         .message-content {
-            max-width: 85%;
-            padding: 12px 16px;
+            padding: 12px 14px;
             border-radius: 20px;
-            font-size: 0.95rem;
-            line-height: 1.4;
+            font-size: 14px;
+            line-height: 1.5;
             word-wrap: break-word;
+            white-space: pre-wrap;
             position: relative;
         }
 
         .bot-message .message-content {
             background: white;
-            border: 1px solid #e9ecef;
-            border-bottom-left-radius: 5px;
-            color: #212529;
+            color: #333;
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
         .user-message .message-content {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            border-bottom-right-radius: 5px;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message-icon {
+            margin-right: 8px;
+            font-size: 14px;
         }
 
         .message-time {
-            font-size: 0.7rem;
-            color: #adb5bd;
+            font-size: 9px;
+            color: #999;
             margin-top: 4px;
-            margin-left: 12px;
+            margin-left: 8px;
         }
 
         .user-message .message-time {
             text-align: right;
-            margin-right: 12px;
-        }
-
-        .icon {
-            margin-right: 6px;
-            font-size: 1.1rem;
         }
 
         /* Typing Indicator */
-        .typing-indicator .message-content {
+        .typing-indicator {
             background: white;
-            padding: 12px 20px;
-        }
-
-        .typing-dots {
-            display: flex;
+            padding: 12px 16px;
+            border-radius: 20px;
+            display: inline-flex;
+            align-items: center;
             gap: 4px;
-            align-items: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
 
-        .typing-dots span {
-            width: 8px;
-            height: 8px;
-            background: #adb5bd;
+        .typing-dot {
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            animation: typing 1.4s infinite;
+            background: #999;
+            animation: typingAnimation 1.4s infinite;
         }
 
-        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
 
-        /* Input Area */
-        .input-area {
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+            30% { transform: translateY(-8px); opacity: 1; }
+        }
+
+        /* Quick Actions - Horizontal Scroll for Mobile */
+        .quick-actions-wrapper {
             background: white;
-            border-top: 1px solid #e9ecef;
-            padding: 12px;
-            display: flex;
-            gap: 8px;
-            align-items: flex-end;
-            flex-shrink: 0;
-        }
-
-        .input-wrapper {
-            flex: 1;
-            background: #f1f3f5;
-            border-radius: 25px;
-            padding: 4px 12px;
-            display: flex;
-            align-items: flex-end;
-            min-height: 45px;
-        }
-
-        #userInput {
-            width: 100%;
-            border: none;
-            background: transparent;
+            border-top: 0.5px solid #e0e0e0;
+            border-bottom: 0.5px solid #e0e0e0;
             padding: 10px 0;
-            font-size: 1rem;
-            outline: none;
-            resize: none;
-            max-height: 120px;
-            font-family: inherit;
-            line-height: 1.4;
         }
 
-        #userInput::placeholder {
-            color: #adb5bd;
-            font-size: 0.95rem;
-        }
-
-        #sendButton {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            border: none;
-            border-radius: 30px;
-            padding: 0 22px;
-            height: 45px;
-            font-size: 1rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
-        }
-
-        #sendButton:active {
-            transform: scale(0.95);
-            opacity: 0.9;
-        }
-
-        #sendButton:disabled {
-            opacity: 0.5;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Quick Actions */
         .quick-actions {
-            background: white;
-            padding: 12px;
             display: flex;
             gap: 8px;
             overflow-x: auto;
+            padding: 0 16px;
+            scrollbar-width: thin;
             -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-            border-top: 1px solid #e9ecef;
-            flex-shrink: 0;
         }
 
         .quick-actions::-webkit-scrollbar {
-            display: none;
+            height: 3px;
+        }
+
+        .quick-actions::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .quick-actions::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 3px;
         }
 
         .quick-btn {
-            background: #f1f3f5;
-            border: none;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px;
             padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            color: #495057;
+            font-size: 13px;
             white-space: nowrap;
             cursor: pointer;
             transition: all 0.2s;
-            border: 1px solid transparent;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #333;
         }
 
         .quick-btn:active {
+            transform: scale(0.96);
             background: #667eea;
             color: white;
+            border-color: #667eea;
         }
 
-        /* FAQ Section */
-        .faq-section {
+        /* Input Area - Mobile Optimized */
+        .input-container {
             background: white;
-            border-top: 8px solid #f1f3f5;
+            border-top: 0.5px solid #e0e0e0;
+            padding: 12px 16px;
+            padding-bottom: max(12px, env(safe-area-inset-bottom));
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+        }
+
+        .input-wrapper textarea {
+            flex: 1;
+            border: 1px solid #e0e0e0;
+            border-radius: 25px;
+            padding: 10px 16px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: none;
+            max-height: 100px;
+            min-height: 42px;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #f8f9fa;
+        }
+
+        .input-wrapper textarea:focus {
+            border-color: #667eea;
+            background: white;
+        }
+
+        .input-wrapper textarea:disabled {
+            background: #f0f0f0;
+            cursor: not-allowed;
+        }
+
+        .send-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0;
             flex-shrink: 0;
         }
 
+        .send-btn:active {
+            transform: scale(0.94);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            transform: none;
+        }
+
+        /* Expandable FAQ Section */
+        .faq-section {
+            background: white;
+            border-top: 0.5px solid #e0e0e0;
+            max-height: 45vh;
+            transition: max-height 0.3s ease;
+            overflow-y: auto;
+        }
+
         .faq-header {
-            padding: 15px;
+            padding: 16px;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
             cursor: pointer;
-            user-select: none;
+            background: white;
+            position: sticky;
+            top: 0;
+            z-index: 5;
         }
 
         .faq-header h3 {
-            font-size: 1rem;
-            color: #212529;
-            flex: 1;
+            font-size: 15px;
+            color: #333;
+            margin: 0;
         }
 
-        .faq-header .arrow {
+        .faq-toggle-icon {
+            font-size: 20px;
             transition: transform 0.3s;
-            font-size: 1.2rem;
-        }
-
-        .faq-header.active .arrow {
-            transform: rotate(180deg);
         }
 
         .faq-content {
             display: none;
-            padding: 0 15px 15px;
+            padding: 0 16px 16px;
         }
 
         .faq-content.show {
             display: block;
         }
 
-        .faq-categories {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .category {
+            margin-bottom: 20px;
         }
 
         .category h4 {
-            font-size: 0.9rem;
+            font-size: 13px;
             color: #667eea;
             margin-bottom: 10px;
+            font-weight: 600;
         }
 
-        .category-buttons {
+        .question-chips {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
         }
 
-        .category-buttons button {
-            background: #f1f3f5;
-            border: none;
-            padding: 10px 15px;
+        .question-chip {
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
             border-radius: 20px;
-            font-size: 0.85rem;
-            color: #495057;
+            padding: 6px 12px;
+            font-size: 12px;
             cursor: pointer;
             transition: all 0.2s;
-            text-align: left;
-            flex: 1 1 auto;
-            min-width: 120px;
-            border: 1px solid #dee2e6;
+            margin: 0;
+            color: #555;
         }
 
-        .category-buttons button:active {
+        .question-chip:active {
+            transform: scale(0.96);
             background: #667eea;
             color: white;
+            border-color: #667eea;
         }
 
-        /* Contact Footer */
-        .contact-footer {
-            background: #f8f9fa;
-            padding: 12px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #868e96;
-            border-top: 1px solid #e9ecef;
-            flex-shrink: 0;
-        }
-
-        .contact-footer a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        /* Confirmation Modal - Mobile Optimized */
+        /* Modal Styles for Mobile */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
             z-index: 1000;
-            animation: fadeIn 0.2s;
+            animation: fadeIn 0.2s ease;
+            padding: 20px;
         }
 
         .modal-content {
             background: white;
-            border-radius: 25px;
-            width: 100%;
+            border-radius: 20px;
             max-width: 320px;
+            width: 100%;
+            animation: slideUp 0.3s ease;
             overflow: hidden;
-            animation: slideUp 0.3s;
         }
 
         .modal-header {
@@ -445,214 +491,227 @@
             text-align: center;
         }
 
-        .modal-header .emoji {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
+        .modal-icon {
+            font-size: 40px;
+            margin-bottom: 8px;
         }
 
         .modal-header h3 {
-            font-size: 1.3rem;
-            font-weight: 600;
+            font-size: 18px;
+            margin: 0;
         }
 
         .modal-body {
-            padding: 25px 20px;
+            padding: 24px;
             text-align: center;
         }
 
         .modal-body p {
-            color: #495057;
-            font-size: 1rem;
-            margin-bottom: 10px;
+            margin: 8px 0;
+            color: #666;
+            font-size: 14px;
         }
 
         .warning-text {
-            color: #ff6b6b !important;
-            font-weight: 500;
+            color: #ff4757;
+            font-weight: 600;
+            font-size: 13px;
+            margin-top: 12px;
         }
 
-        .modal-buttons {
+        .modal-footer {
             display: flex;
             gap: 10px;
-            padding: 0 20px 20px;
+            padding: 16px 20px;
+            border-top: 0.5px solid #e0e0e0;
         }
 
         .modal-btn {
             flex: 1;
-            padding: 15px;
+            padding: 12px;
             border: none;
-            border-radius: 30px;
-            font-size: 1rem;
-            font-weight: 500;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
+            margin: 0;
         }
 
-        .modal-btn.cancel {
-            background: #f1f3f5;
-            color: #495057;
+        .modal-btn-cancel {
+            background: #f5f5f5;
+            color: #666;
         }
 
-        .modal-btn.delete {
-            background: #ff6b6b;
+        .modal-btn-confirm {
+            background: #ff4757;
             color: white;
         }
 
         .modal-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.97);
         }
 
         /* Toast Notification */
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px;
             left: 20px;
             right: 20px;
-            background: white;
-            border-radius: 30px;
-            padding: 15px 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            animation: slideUp 0.3s;
+            background: #333;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-align: center;
             z-index: 1001;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-
-        .toast.success {
-            border-left: 4px solid #51cf66;
-        }
-
-        .toast.error {
-            border-left: 4px solid #ff6b6b;
-        }
-
-        .toast-icon {
-            font-size: 1.5rem;
-        }
-
-        .toast-message {
-            flex: 1;
-            font-size: 0.95rem;
-            color: #212529;
+            animation: slideUp 0.3s ease;
+            font-size: 14px;
         }
 
         /* Animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
 
-        @keyframes slideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        /* Scrollbar Styling */
+        .chat-messages::-webkit-scrollbar,
+        .faq-section::-webkit-scrollbar {
+            width: 4px;
         }
 
-        @keyframes typing {
-            0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-            30% { transform: translateY(-10px); opacity: 1; }
+        .chat-messages::-webkit-scrollbar-track,
+        .faq-section::-webkit-scrollbar-track {
+            background: #f1f1f1;
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            75% { transform: translateX(5px); }
+        .chat-messages::-webkit-scrollbar-thumb,
+        .faq-section::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 4px;
         }
 
-        .shake {
-            animation: shake 0.3s ease-in-out;
+        /* Loading States */
+        .sending-indicator {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            background: white;
+            border-radius: 20px;
+            padding: 8px 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            z-index: 100;
         }
 
-        /* Loading Skeleton */
-        .skeleton {
-            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-        }
-
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: -200% 0; }
-        }
-
-        /* Prevent body scroll when modal is open */
-        body.modal-open {
-            overflow: hidden;
-        }
-
-        /* Touch-friendly tap targets */
-        button, .clear-btn, .quick-btn, .category-buttons button {
-            min-height: 44px;
-            min-width: 44px;
-        }
-
-        /* Safe area for notched phones */
-        @supports (padding: max(0px)) {
-            .header {
-                padding-top: max(15px, env(safe-area-inset-top));
-                padding-left: max(20px, env(safe-area-inset-left));
-                padding-right: max(20px, env(safe-area-inset-right));
+        /* Responsive Adjustments */
+        @media (max-width: 480px) {
+            .message {
+                max-width: 90%;
             }
 
-            .input-area {
-                padding-bottom: max(12px, env(safe-area-inset-bottom));
+            .message-content {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+
+            .quick-btn {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+
+            .question-chip {
+                font-size: 11px;
+                padding: 5px 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
+        <!-- Mobile Status Bar -->
+        <div class="status-bar">
+            <span class="time" id="currentTime">9:41</span>
+            <div class="battery-status">
+                <span>📶</span>
+                <span>🔋 100%</span>
+            </div>
+        </div>
+
         <!-- Header -->
         <div class="header">
-            <h1>
-                <span>🔧</span>
-                Router Support
-            </h1>
-            <button onclick="clearHistory()" class="clear-btn" id="clearHistoryBtn">
-                <span>🗑️</span>
-                Clear
-            </button>
+            <div class="header-left">
+                <button class="back-btn" onclick="goBack()">
+                    <span>←</span>
+                </button>
+                <div class="header-info">
+                    <h1>Router Support</h1>
+                    <p>Huawei A5 & V5 | Online</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button class="action-btn" onclick="clearHistory()" title="Clear chat">
+                    🗑️
+                </button>
+                <button class="action-btn" onclick="toggleFAQ()" title="Help">
+                    ❓
+                </button>
+            </div>
         </div>
 
-        <!-- Router Info Bar -->
-        <div class="router-info">
-            <span class="router-tag active">📱 Huawei A5 (2.4GHz)</span>
-            <span class="router-tag">🚀 Huawei V5 (Dual Band)</span>
-            <span class="router-tag">⚡ 24/7 Support</span>
+        <!-- Online Status -->
+        <div class="online-status">
+            <span class="status-dot"></span>
+            <span>Connected to support assistant</span>
         </div>
 
-        <!-- Chat Messages -->
+        <!-- Chat Messages Area -->
         <div class="chat-messages" id="chatMessages">
             {% for message in chat_history %}
                 <div class="message {{ message.type }}-message">
                     <div>
                         <div class="message-content">
                             {% if message.type == 'bot' %}
-                                <span class="icon">🤖</span>
+                                <span class="message-icon">🤖</span>
                             {% else %}
-                                <span class="icon">👤</span>
+                                <span class="message-icon">👤</span>
                             {% endif %}
                             {{ message.text|safe|linebreaksbr }}
                         </div>
-                        <div class="message-time">
-                            {{ message.timestamp|default:"Just now" }}
-                        </div>
+                        <div class="message-time">{{ message.timestamp|default:"Just now" }}</div>
                     </div>
                 </div>
             {% empty %}
                 <div class="message bot-message">
                     <div>
                         <div class="message-content">
-                            <span class="icon">🤖</span>
-                            Hello! 👋 I'm your router support assistant. How can I help you with your Huawei router today?
+                            <span class="message-icon">🤖</span>
+                            Hello! 👋 I'm your router support assistant. How can I help you with your Huawei A5 or V5 router today?
                         </div>
                         <div class="message-time">Just now</div>
                     </div>
@@ -661,225 +720,124 @@
 
             <!-- Typing Indicator -->
             <div id="typingIndicator" class="message bot-message" style="display: none;">
-                <div>
-                    <div class="message-content typing-indicator">
-                        <div class="typing-dots">
-                            <span></span>
-                            <span></span>
-                            <span></span>
-                        </div>
-                    </div>
+                <div class="typing-indicator">
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
+                    <span class="typing-dot"></span>
                 </div>
             </div>
         </div>
 
-        <!-- Quick Actions -->
-        <div class="quick-actions">
-            <button onclick="useSuggestedQuestion('Why is my internet slow?')" class="quick-btn">🐢 Slow</button>
-            <button onclick="useSuggestedQuestion('How do I change my WiFi password?')" class="quick-btn">🔑 Password</button>
-            <button onclick="useSuggestedQuestion('Internet keeps disconnecting')" class="quick-btn">📶 Drops</button>
-            <button onclick="useSuggestedQuestion('How to reset router?')" class="quick-btn">🔄 Reset</button>
-            <button onclick="useSuggestedQuestion('Weak WiFi signal')" class="quick-btn">📡 Weak Signal</button>
+        <!-- Quick Actions (Horizontal Scroll) -->
+        <div class="quick-actions-wrapper">
+            <div class="quick-actions">
+                <button class="quick-btn" onclick="sendQuickMessage('slow internet')">🐢 Slow Internet</button>
+                <button class="quick-btn" onclick="sendQuickMessage('change password')">🔑 Change Password</button>
+                <button class="quick-btn" onclick="sendQuickMessage('not connecting')">📱 Not Connecting</button>
+                <button class="quick-btn" onclick="sendQuickMessage('weak signal')">📡 Weak Signal</button>
+                <button class="quick-btn" onclick="sendQuickMessage('reset router')">🔄 Reset Router</button>
+            </div>
         </div>
 
-        <!-- FAQ Section (Collapsible) -->
-        <div class="faq-section">
-            <div class="faq-header" onclick="toggleFAQ()" id="faqHeader">
-                <h3>📋 Frequently Asked Questions</h3>
-                <span class="arrow" id="faqArrow">▼</span>
+        <!-- Input Area -->
+        <div class="input-container">
+            <div class="input-wrapper">
+                <textarea
+                    id="userInput"
+                    placeholder="Type your question..."
+                    rows="1"
+                    autocomplete="off"
+                ></textarea>
+                <button class="send-btn" onclick="sendMessage()" id="sendButton">
+                    <span>➤</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Expandable FAQ Section -->
+        <div class="faq-section" id="faqSection">
+            <div class="faq-header" onclick="toggleFAQ()">
+                <h3>💡 Quick Help & FAQs</h3>
+                <span class="faq-toggle-icon" id="faqToggleIcon">▲</span>
             </div>
             <div class="faq-content" id="faqContent">
-                <div class="faq-categories">
-                    <div class="category">
-                        <h4>🔌 Connection Issues</h4>
-                        <div class="category-buttons">
-                            <button onclick="useSuggestedQuestion('Why is my router showing only one light?')">⚡ One Light</button>
-                            <button onclick="useSuggestedQuestion('Why does my internet keep disconnecting?')">📶 Keeps Dropping</button>
-                            <button onclick="useSuggestedQuestion('Devices not connecting to WiFi')">📱 Not Connecting</button>
-                        </div>
+                <div class="category">
+                    <h4>🔌 Connection Issues</h4>
+                    <div class="question-chips">
+                        <button class="question-chip" onclick="sendQuickMessage('Why is my router showing only one light?')">⚡ Only one light</button>
+                        <button class="question-chip" onclick="sendQuickMessage('Why does my internet keep disconnecting?')">📶 Keeps dropping</button>
+                        <button class="question-chip" onclick="sendQuickMessage('Why are my devices not connecting to WiFi?')">📱 Won't connect</button>
                     </div>
-
-                    <div class="category">
-                        <h4>⚡ Performance</h4>
-                        <div class="category-buttons">
-                            <button onclick="useSuggestedQuestion('Why is my internet slow?')">🐢 Slow Speed</button>
-                            <button onclick="useSuggestedQuestion('WiFi weak in some rooms')">📡 Weak Signal</button>
-                            <button onclick="useSuggestedQuestion('2.4GHz vs 5GHz difference')">📊 WiFi Bands</button>
-                        </div>
+                </div>
+                <div class="category">
+                    <h4>⚡ Performance</h4>
+                    <div class="question-chips">
+                        <button class="question-chip" onclick="sendQuickMessage('Why is my internet slow?')">🐢 Slow speed</button>
+                        <button class="question-chip" onclick="sendQuickMessage('Why is WiFi weak in some rooms?')">📡 Weak signal</button>
+                        <button class="question-chip" onclick="sendQuickMessage('What\'s the difference between 2.4GHz and 5GHz?')">📊 Band difference</button>
                     </div>
-
-                    <div class="category">
-                        <h4>🔧 Setup</h4>
-                        <div class="category-buttons">
-                            <button onclick="useSuggestedQuestion('How to change WiFi password?')">🔑 Change Password</button>
-                            <button onclick="useSuggestedQuestion('How to reset router?')">🔄 Factory Reset</button>
-                            <button onclick="useSuggestedQuestion('How to setup parental controls?')">👪 Parental Controls</button>
-                        </div>
+                </div>
+                <div class="category">
+                    <h4>🔧 Setup</h4>
+                    <div class="question-chips">
+                        <button class="question-chip" onclick="sendQuickMessage('How do I change my WiFi password?')">🔑 Change password</button>
+                        <button class="question-chip" onclick="sendQuickMessage('How do I reset my router to factory settings?')">🔄 Factory reset</button>
+                        <button class="question-chip" onclick="sendQuickMessage('How do I setup parental controls?')">👪 Parental controls</button>
                     </div>
-
-                    <div class="category">
-                        <h4>📱 Router Models</h4>
-                        <div class="category-buttons">
-                            <button onclick="useSuggestedQuestion('Tell me about Huawei A5')">📱 Huawei A5</button>
-                            <button onclick="useSuggestedQuestion('Tell me about Huawei V5')">🚀 Huawei V5</button>
-                            <button onclick="useSuggestedQuestion('Compare A5 and V5')">⚖️ Compare</button>
-                        </div>
-                    </div>
-
-                    <div class="category">
-                        <h4>⚠️ Troubleshooting</h4>
-                        <div class="category-buttons">
-                            <button onclick="useSuggestedQuestion('Router overheating')">🌡️ Overheating</button>
-                            <button onclick="useSuggestedQuestion('How to update firmware?')">🔄 Update</button>
-                            <button onclick="useSuggestedQuestion('Interference issues')">📻 Interference</button>
-                        </div>
+                </div>
+                <div class="category">
+                    <h4>📱 Router Models</h4>
+                    <div class="question-chips">
+                        <button class="question-chip" onclick="sendQuickMessage('Tell me about Huawei A5 router')">📱 Huawei A5</button>
+                        <button class="question-chip" onclick="sendQuickMessage('Tell me about Huawei V5 router')">🚀 Huawei V5</button>
+                        <button class="question-chip" onclick="sendQuickMessage('Compare A5 and V5')">⚖️ Compare models</button>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Contact Footer -->
-        <div class="contact-footer">
-            <span>Need human help? <a href="/contact">Contact Support</a></span>
         </div>
     </div>
 
     <script>
-        // Mobile-optimized JavaScript
-        let isSending = false;
-        let faqOpen = false;
+        // DOM Elements
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+        const sendButton = document.getElementById('sendButton');
+        const typingIndicator = document.getElementById('typingIndicator');
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            scrollToBottom();
-            setupTextarea();
-
-            // Add touch event handling
-            const buttons = document.querySelectorAll('button');
-            buttons.forEach(button => {
-                button.addEventListener('touchstart', function(e) {
-                    e.preventDefault(); // Prevent double-tap zoom
-                }, { passive: false });
-            });
+        // Auto-resize textarea
+        userInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 100) + 'px';
         });
 
-        // Setup textarea auto-resize
-        function setupTextarea() {
-            const textarea = document.getElementById('userInput');
-            textarea.addEventListener('input', function() {
-                this.style.height = 'auto';
-                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-            });
-
-            // Handle keyboard show/hide on mobile
-            textarea.addEventListener('focus', function() {
-                setTimeout(scrollToBottom, 300);
-            });
-        }
-
-        // Scroll to bottom smoothly
-        function scrollToBottom() {
-            const chatMessages = document.getElementById('chatMessages');
-            chatMessages.scrollTo({
-                top: chatMessages.scrollHeight,
-                behavior: 'smooth'
-            });
-        }
-
-        // Handle key press
-        function handleKeyPress(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
-                event.preventDefault();
+        // Handle Enter key
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
                 sendMessage();
             }
-        }
+        });
 
-        // Use suggested question
-        function useSuggestedQuestion(question) {
-            const input = document.getElementById('userInput');
-            input.value = question;
-            input.style.height = 'auto';
-            input.style.height = Math.min(input.scrollHeight, 120) + 'px';
-            sendMessage();
-        }
-
-        // Send message
-        function sendMessage() {
-            if (isSending) return;
-
-            const input = document.getElementById('userInput');
-            const message = input.value.trim();
-
-            if (!message) {
-                input.classList.add('shake');
-                setTimeout(() => input.classList.remove('shake'), 300);
-                return;
-            }
-
-            isSending = true;
-
-            // Disable input and button
-            input.disabled = true;
-            document.getElementById('sendButton').disabled = true;
-
-            // Add user message to chat
-            addMessageToChat('user', message);
-
-            // Clear input
-            input.value = '';
-            input.style.height = 'auto';
-
-            // Show typing indicator
-            showTypingIndicator();
-
-            // Send to server
-            fetch('/get-response/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: JSON.stringify({ message: message })
-            })
-            .then(response => response.json())
-            .then(data => {
-                hideTypingIndicator();
-
-                setTimeout(() => {
-                    addMessageToChat('bot', data.response);
-
-                    // Re-enable input
-                    input.disabled = false;
-                    document.getElementById('sendButton').disabled = false;
-                    input.focus();
-                    isSending = false;
-                }, 500);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                hideTypingIndicator();
-                addMessageToChat('bot', '😔 Sorry, connection error. Please try again.');
-
-                input.disabled = false;
-                document.getElementById('sendButton').disabled = false;
-                isSending = false;
-            });
+        // Scroll to bottom function
+        function scrollToBottom() {
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         // Add message to chat
-        function addMessageToChat(type, text) {
-            const chatMessages = document.getElementById('chatMessages');
+        function addMessage(type, text, isHtml = false) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${type}-message`;
 
             const now = new Date();
             const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
+            const displayText = isHtml ? text : text.replace(/\n/g, '<br>');
+
             messageDiv.innerHTML = `
                 <div>
                     <div class="message-content">
-                        <span class="icon">${type === 'bot' ? '🤖' : '👤'}</span>
-                        ${text.replace(/\n/g, '<br>')}
+                        <span class="message-icon">${type === 'bot' ? '🤖' : '👤'}</span>
+                        ${displayText}
                     </div>
                     <div class="message-time">${timeStr}</div>
                 </div>
@@ -887,125 +845,185 @@
 
             chatMessages.appendChild(messageDiv);
             scrollToBottom();
+            return messageDiv;
         }
 
-        // Typing indicator
-        function showTypingIndicator() {
-            document.getElementById('typingIndicator').style.display = 'block';
+        // Show/hide typing indicator
+        function showTyping() {
+            typingIndicator.style.display = 'flex';
             scrollToBottom();
         }
 
-        function hideTypingIndicator() {
-            document.getElementById('typingIndicator').style.display = 'none';
+        function hideTyping() {
+            typingIndicator.style.display = 'none';
         }
 
-        // Toggle FAQ
-        function toggleFAQ() {
-            const content = document.getElementById('faqContent');
-            const arrow = document.getElementById('faqArrow');
-            const header = document.getElementById('faqHeader');
+        // Send message function
+        async function sendMessage() {
+            const message = userInput.value.trim();
 
-            if (faqOpen) {
-                content.classList.remove('show');
-                arrow.style.transform = 'rotate(0deg)';
-                header.classList.remove('active');
-            } else {
-                content.classList.add('show');
-                arrow.style.transform = 'rotate(180deg)';
-                header.classList.add('active');
+            if (!message) {
+                showToast('Please type a message', 'warning');
+                userInput.style.borderColor = '#ff4757';
+                setTimeout(() => {
+                    userInput.style.borderColor = '#e0e0e0';
+                }, 1000);
+                return;
             }
 
-            faqOpen = !faqOpen;
+            // Disable input
+            userInput.disabled = true;
+            sendButton.disabled = true;
+
+            // Add user message
+            addMessage('user', message);
+
+            // Clear input
+            userInput.value = '';
+            userInput.style.height = 'auto';
+
+            // Show typing indicator
+            showTyping();
+
+            try {
+                const response = await fetch('/get-response/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+
+                if (!response.ok) throw new Error('Network error');
+
+                const data = await response.json();
+
+                hideTyping();
+                addMessage('bot', data.response, true);
+
+            } catch (error) {
+                console.error('Error:', error);
+                hideTyping();
+                addMessage('bot', '😔 Sorry, I encountered an error. Please try again or check your connection.');
+                showToast('Connection error', 'error');
+            } finally {
+                userInput.disabled = false;
+                sendButton.disabled = false;
+                userInput.focus();
+            }
         }
 
-        // Clear history with confirmation modal
-        function clearHistory() {
-            // Prevent body scroll
-            document.body.classList.add('modal-open');
+        // Quick message function
+        function sendQuickMessage(message) {
+            userInput.value = message;
+            sendMessage();
+        }
 
-            // Create modal
+        // Clear history with modal
+        function clearHistory() {
             const modal = document.createElement('div');
             modal.className = 'modal-overlay';
-            modal.id = 'confirmModal';
-            modal.onclick = function(e) {
-                if (e.target === modal) closeModal();
-            };
-
             modal.innerHTML = `
                 <div class="modal-content">
                     <div class="modal-header">
-                        <div class="emoji">🗑️</div>
+                        <div class="modal-icon">🗑️</div>
                         <h3>Clear Chat History?</h3>
                     </div>
                     <div class="modal-body">
                         <p>Are you sure you want to clear all conversation history?</p>
-                        <p class="warning-text">This action cannot be undone.</p>
+                        <p class="warning-text">This action cannot be undone!</p>
                     </div>
-                    <div class="modal-buttons">
-                        <button class="modal-btn cancel" onclick="closeModal()">No, Keep</button>
-                        <button class="modal-btn delete" onclick="proceedClearHistory()">Yes, Clear</button>
+                    <div class="modal-footer">
+                        <button class="modal-btn modal-btn-cancel" onclick="closeModal()">Cancel</button>
+                        <button class="modal-btn modal-btn-confirm" onclick="confirmClear()">Clear</button>
                     </div>
                 </div>
             `;
 
             document.body.appendChild(modal);
+            window.currentModal = modal;
         }
 
-        // Close modal
         function closeModal() {
-            const modal = document.getElementById('confirmModal');
-            if (modal) {
-                modal.remove();
-                document.body.classList.remove('modal-open');
+            if (window.currentModal) {
+                window.currentModal.remove();
+                window.currentModal = null;
             }
         }
 
-        // Proceed with clearing history
-        function proceedClearHistory() {
+        async function confirmClear() {
             closeModal();
+            showToast('Clearing history...', 'info');
 
-            const clearBtn = document.getElementById('clearHistoryBtn');
-            const originalText = clearBtn.innerHTML;
-            clearBtn.innerHTML = '<span>⏰</span> Clearing...';
-            clearBtn.disabled = true;
+            try {
+                const response = await fetch('/clear-history/', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken')
+                    }
+                });
 
-            fetch('/clear-history/', {
-                method: 'POST',
-                headers: {
-                    'X-CSRFToken': getCookie('csrftoken')
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
+                const data = await response.json();
+
                 if (data.success) {
                     showToast('Chat history cleared!', 'success');
-                    setTimeout(() => location.reload(), 1000);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
                 } else {
-                    throw new Error('Failed');
+                    throw new Error('Failed to clear');
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 showToast('Failed to clear history', 'error');
-                clearBtn.innerHTML = originalText;
-                clearBtn.disabled = false;
-            });
+            }
         }
 
-        // Show toast notification
-        function showToast(message, type) {
+        // Toast notification
+        function showToast(message, type = 'info') {
             const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `
-                <span class="toast-icon">${type === 'success' ? '✅' : '❌'}</span>
-                <span class="toast-message">${message}</span>
-            `;
+            toast.className = 'toast';
+            toast.textContent = message;
 
+            const colors = {
+                success: '#00c853',
+                error: '#ff4757',
+                warning: '#ffa502',
+                info: '#667eea'
+            };
+
+            toast.style.borderLeft = `4px solid ${colors[type] || colors.info}`;
             document.body.appendChild(toast);
 
             setTimeout(() => {
-                toast.style.animation = 'slideUp 0.3s reverse';
+                toast.style.animation = 'slideUp 0.3s ease reverse';
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
+        }
+
+        // Toggle FAQ section
+        function toggleFAQ() {
+            const faqContent = document.getElementById('faqContent');
+            const icon = document.getElementById('faqToggleIcon');
+
+            if (faqContent.classList.contains('show')) {
+                faqContent.classList.remove('show');
+                icon.textContent = '▼';
+                document.querySelector('.faq-section').style.maxHeight = '60px';
+            } else {
+                faqContent.classList.add('show');
+                icon.textContent = '▲';
+                document.querySelector('.faq-section').style.maxHeight = '45vh';
+            }
+        }
+
+        // Go back function (for PWA)
+        function goBack() {
+            if (window.history.length > 1) {
+                window.history.back();
+            } else {
+                showToast('Press back again to exit', 'info');
+            }
         }
 
         // Get CSRF token
@@ -1024,27 +1042,36 @@
             return cookieValue;
         }
 
-        // Handle offline/online events
-        window.addEventListener('offline', function() {
-            showToast('You are offline. Check connection.', 'error');
-        });
+        // Update time
+        function updateTime() {
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('currentTime').textContent = timeStr;
+        }
 
-        window.addEventListener('online', function() {
+        // Check online status
+        window.addEventListener('online', () => {
             showToast('Back online!', 'success');
         });
 
-        // Prevent zoom on double-tap for better mobile experience
-        document.addEventListener('touchend', function(e) {
-            const now = Date.now();
-            const doubleTapDelay = 300;
+        window.addEventListener('offline', () => {
+            showToast('No internet connection', 'error');
+        });
 
-            if (now - lastTap < doubleTapDelay) {
-                e.preventDefault();
-            }
-            lastTap = now;
-        }, { passive: false });
+        // Initialize
+        scrollToBottom();
+        updateTime();
+        setInterval(updateTime, 60000);
 
-        let lastTap = 0;
+        // Focus on input on load
+        setTimeout(() => {
+            userInput.focus();
+        }, 100);
+
+        // Prevent zoom on input focus (iOS)
+        userInput.addEventListener('touchstart', function() {
+            this.style.fontSize = '16px';
+        });
     </script>
 </body>
 </html>
