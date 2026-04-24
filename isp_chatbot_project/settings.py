@@ -149,4 +149,20 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-STATICFILES_DIRS = [BASE_DIR / 'static']  # Add this line
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# CSRF Settings for Production
+CSRF_TRUSTED_ORIGINS = [
+    RENDER_URL,
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+]
+
+# If you're using a custom domain
+CSRF_COOKIE_SECURE = True  # Set to False if not using HTTPS in development
+CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript to read the cookie
+CSRF_USE_SESSIONS = False  # Store CSRF token in cookie
+CSRF_COOKIE_SAMESITE = 'Lax'  # Good balance for security
+
+# Ensure CSRF token is sent with AJAX requests
+CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
